@@ -48,7 +48,7 @@ class Question {
 
 public class QuizApplication {
     private static final String QUESTIONS_FILE = "questions.txt";
-    private static final int SCORE_PER_QUESTIONS = 10;
+    private static final int SCORE_PER_QUESTION = 10;
 
     private List<Question> questions;
     private int score;
@@ -90,6 +90,57 @@ public class QuizApplication {
         } else {
             System.out.println("Invalid format in line:" + line);
             return "";
+        }
+    }
+
+    public void startQuiz() {
+        score = 0;
+
+        System.out.println("Welcome to the Quiz Application");
+
+        for(int i = 0; i < questions.size(); i++) {
+            Question question = questions.get(i);
+            System.out.println("Question " + (i + 1) + ": " + question.getQuestionText());
+            System.out.println("A. " + question.getOptionA());
+            System.out.println("B. " + question.getOptionB());
+            System.out.println("C. " + question.getOptionC());
+ 
+            System.out.println("D. " + question.getOptionD());
+
+            String userAnswer = getUserAnswer();
+
+            if(question.isCorrectAnswer(userAnswer)) {
+                System.out.println("Correct! \n");
+                score += SCORE_PER_QUESTION;
+            } else {
+                System.out.println("Incorrect!\n");
+            }
+        }
+
+        System.out.println("Quiz Summary:");
+        System.out.println("Total Questions: " + questions.size());
+        System.out.println("Correct Answers: " + (score / SCORE_PER_QUESTION));
+        System.out.println("Incorrect Answers: " + ((questions.size() * SCORE_PER_QUESTION - score) / SCORE_PER_QUESTION));
+        System.out.println("Score: " + score + "%\n");
+
+        System.out.println("Thank you for playing!");
+
+    }
+
+    private String getUserAnswer() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Your Answer: ");
+        return scanner.nextLine().toUpperCase();
+    }
+
+    public static void main(String[] args) {
+        QuizApplication quiz = new QuizApplication();
+
+        try {
+            quiz.loadQuestions();
+            quiz.startQuiz();
+        } catch (FileNotFoundException e) {
+            System.out.println("Failed to load questions from file: " + QUESTIONS_FILE);
         }
     }
 }
