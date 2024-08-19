@@ -40,4 +40,8 @@ class Question {
     public String getOptionD() {
         return optionD;
     }
+
+    public boolean isCorrectAnswer(String answer) {
+        return correctAnswer.equalsIgnoreCase(answer);
+    }
 }
